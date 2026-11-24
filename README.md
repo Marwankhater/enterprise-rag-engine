@@ -148,6 +148,27 @@ Self-hosted Langfuse: `docker compose --profile observability up -d` (fill the L
 
 Nobody can ingest a document above their own clearance or into a department they are not in.
 
+## Results
+
+Retrieval on the 38 answerable single-turn cases of the golden set, from the `retrieval-eval` CI job
+([run](https://github.com/Marwankhater/enterprise-rag-engine/actions/runs/45409205200)), with
+`intfloat/multilingual-e5-small` embeddings. A hit means the section holding the reference passage
+was retrieved.
+
+| Retrieval | hit@1 | hit@5 | MRR@10 |
+|---|---|---|---|
+| Dense only (pgvector) | 0.684 | 0.974 | 0.811 |
+| Sparse only (full text) | 0.632 | 0.974 | 0.789 |
+| Hybrid (RRF) | 0.711 | 0.974 | 0.835 |
+| Hybrid + `bge-reranker-base` | **0.737** | **1.000** | **0.850** |
+
+Access-control leaks (a document the asker cannot read appearing in the top 30, over all 62
+cases): **0**.
+
+Hybrid search finds the right section first more often than either retriever alone, and the
+reranker lifts it again and brings every reference passage into the top five. The end-to-end Ragas
+scores are produced by the `quality-gate` job once the repository has an `LLM_API_KEY` secret.
+
 ## Evaluation
 
 `tests/golden_dataset.json` holds 62 questions over the sample corpus and sales data: single-hop,
