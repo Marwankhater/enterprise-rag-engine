@@ -44,6 +44,22 @@ class LLMResult:
 
 
 class LLM(Protocol):
+    @staticmethod
+    def is_reasoning_model(model: str) -> bool:
+        return any(tag in model.lower() for tag in ("gpt-oss", "o1", "o3", "o4", "qwen3", "deepseek-r1"))
+
+    def _request(self, model: str, messages: list[dict[str, str]], max_tokens: int | None) -> dict[str, Any]:
+        kwargs: dict[str, Any] = {"model": model, "messages": messages, "temperature": self.temperature}
+        if self.is_reasoning_model(model):
+            # Reasoning tokens count against max_tokens, so a small limit would cut the answer off.
+            if self.reasoning_effort:
+                kwargs["reasoning_effort"] = self.reasoning_effort
+            if max_tokens:
+                kwargs["max_tokens"] = max(max_tokens * 4, 2048)
+        elif max_tokens:
+            kwargs["max_tokens"] = max_tokens
+        return kwargs
+
     async def chat(
         self,
         messages: list[dict[str, str]],
@@ -71,7 +87,24 @@ class OpenAICompatibleLLM:
         )
         self.default_model = settings.llm_model
         self.temperature = settings.llm_temperature
+        self.reasoning_effort = settings.llm_reasoning_effort
         self.max_retries = max_retries
+
+    @staticmethod
+    def is_reasoning_model(model: str) -> bool:
+        return any(tag in model.lower() for tag in ("gpt-oss", "o1", "o3", "o4", "qwen3", "deepseek-r1"))
+
+    def _request(self, model: str, messages: list[dict[str, str]], max_tokens: int | None) -> dict[str, Any]:
+        kwargs: dict[str, Any] = {"model": model, "messages": messages, "temperature": self.temperature}
+        if self.is_reasoning_model(model):
+            # Reasoning tokens count against max_tokens, so a small limit would cut the answer off.
+            if self.reasoning_effort:
+                kwargs["reasoning_effort"] = self.reasoning_effort
+            if max_tokens:
+                kwargs["max_tokens"] = max(max_tokens * 4, 2048)
+        elif max_tokens:
+            kwargs["max_tokens"] = max_tokens
+        return kwargs
 
     async def chat(
         self,
@@ -85,9 +118,7 @@ class OpenAICompatibleLLM:
         from openai import APIConnectionError, APIStatusError, APITimeoutError
 
         model = model or self.default_model
-        kwargs: dict[str, Any] = {"model": model, "messages": messages, "temperature": self.temperature}
-        if max_tokens:
-            kwargs["max_tokens"] = max_tokens
+        kwargs = self._request(model, messages, max_tokens)
         if json_mode:
             kwargs["response_format"] = {"type": "json_object"}
         with span(f"llm.{name}", model=model) as current:
@@ -129,9 +160,7 @@ class OpenAICompatibleLLM:
         self, messages: list[dict[str, str]], *, model: str | None = None, max_tokens: int | None = None
     ) -> AsyncIterator[str]:
         model = model or self.default_model
-        kwargs: dict[str, Any] = {"model": model, "messages": messages, "temperature": self.temperature, "stream": True}
-        if max_tokens:
-            kwargs["max_tokens"] = max_tokens
+        kwargs = {**self._request(model, messages, max_tokens), "stream": True}
         with span("llm.stream", model=model):
             response = await self.client.chat.completions.create(**kwargs)
             async for chunk in response:

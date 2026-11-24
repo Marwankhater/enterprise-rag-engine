@@ -63,10 +63,12 @@ class Settings(BaseSettings):
     # LLM: any OpenAI-compatible endpoint (OpenAI, Groq, Ollama, vLLM...)
     llm_api_key: SecretStr | None = None
     llm_base_url: str = "https://api.groq.com/openai/v1"  # Groq free tier; Ollama: http://ollama:11434/v1
-    llm_model: str = "llama-3.3-70b-versatile"
-    llm_grader_model: str | None = None  # cheaper model for grading/routing; falls back to llm_model
+    llm_model: str = "openai/gpt-oss-120b"
+    llm_grader_model: str | None = "openai/gpt-oss-20b"  # cheaper model for grading and routing
     llm_timeout_s: float = 60.0
     llm_temperature: float = 0.0
+    # For reasoning models (gpt-oss, o-series): how much they think before answering.
+    llm_reasoning_effort: Literal["low", "medium", "high"] | None = "low"
 
     # Embeddings
     embedding_backend: Literal["sentence-transformers", "openai", "hashing"] = "sentence-transformers"
