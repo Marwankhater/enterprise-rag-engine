@@ -26,10 +26,14 @@ API_KEYS = {
     "key-finance": {"name": "finance", "departments": ["finance"], "clearance": "confidential", "can_ingest": True},
 }
 
+TEST_DB = os.environ.get("TEST_DATABASE_URL", "postgresql://rag:rag@localhost:5432/rag_test")
+
 os.environ.update(
     {
         "ENVIRONMENT": "test",
-        "DATABASE_URL": os.environ.get("TEST_DATABASE_URL", "postgresql://rag:rag@localhost:5432/rag_test"),
+        "DATABASE_URL": TEST_DB,
+        # The SQL tool connects as the read-only role created by the migrations, as in production.
+        "SQL_TOOL_DATABASE_URL": re.sub(r"//[^@]+@", "//rag_reader:rag_reader@", TEST_DB),
         "REDIS_URL": os.environ.get("TEST_REDIS_URL", "redis://localhost:6379/15"),
         "EMBEDDING_BACKEND": "hashing",
         "EMBEDDING_DIM": "384",
