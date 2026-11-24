@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+.venv/
+.env
+.pytest_cache/
+.ruff_cache/
+.pytest-uploads/
+*.egg-info/
+models/
+ml_pipeline/output/
+reports/raw/
+examples/_large/
