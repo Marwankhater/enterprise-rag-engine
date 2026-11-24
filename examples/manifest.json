@@ -1,0 +1,11 @@
+{
+  "product-faq.txt": {"department_id": null, "access_level": "public"},
+  "company-handbook.md": {"department_id": null, "access_level": "internal"},
+  "onboarding-guide.pdf": {"department_id": "engineering", "access_level": "internal"},
+  "finance-expense-and-revenue-policy.md": {"department_id": "finance", "access_level": "confidential"},
+  "hr-compensation-and-leave.md": {"department_id": "hr", "access_level": "restricted"},
+  "security-incident-runbook.md": {"department_id": "engineering", "access_level": "internal"},
+  "sales-playbook.md": {"department_id": "sales", "access_level": "internal"},
+  "data-retention-policy.docx": {"department_id": null, "access_level": "internal"},
+  "سياسة-العمل-عن-بعد.md": {"department_id": null, "access_level": "internal"}
+}
