@@ -1,0 +1,1107 @@
+{
+  "version": 1,
+  "principals": {
+    "public_visitor": {
+      "departments": [],
+      "clearance": "public"
+    },
+    "employee": {
+      "departments": [],
+      "clearance": "internal"
+    },
+    "engineer": {
+      "departments": [
+        "engineering"
+      ],
+      "clearance": "internal"
+    },
+    "finance_analyst": {
+      "departments": [
+        "finance"
+      ],
+      "clearance": "confidential"
+    },
+    "hr_manager": {
+      "departments": [
+        "hr"
+      ],
+      "clearance": "restricted"
+    },
+    "sales_rep": {
+      "departments": [
+        "sales"
+      ],
+      "clearance": "internal"
+    }
+  },
+  "cases": [
+    {
+      "id": "q001",
+      "category": "single_hop",
+      "principal": "public_visitor",
+      "question": "How much does the Pro plan cost?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "Pro costs $29 per user per month.",
+      "reference_contexts": [
+        "Pro is $29 per user per month"
+      ],
+      "expected_sources": [
+        "product-faq.txt"
+      ],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q002",
+      "category": "single_hop",
+      "principal": "public_visitor",
+      "question": "How long does Acme Cloud keep retrying a failed webhook delivery?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "Failed webhook deliveries are retried for up to 24 hours.",
+      "reference_contexts": [
+        "Failed deliveries are retried for up to 24 hours."
+      ],
+      "expected_sources": [
+        "product-faq.txt"
+      ],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q003",
+      "category": "single_hop",
+      "principal": "employee",
+      "question": "How many days of paid vacation do full-time employees get each year?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "Full-time employees accrue 20 days of paid vacation per year, in addition to 10 company holidays.",
+      "reference_contexts": [
+        "Full-time employees accrue 20 days of paid vacation per year"
+      ],
+      "expected_sources": [
+        "company-handbook.md"
+      ],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q004",
+      "category": "single_hop",
+      "principal": "employee",
+      "question": "How long is paid parental leave?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "New parents get 16 weeks of fully paid parental leave, which can be taken any time within the first year after birth or adoption.",
+      "reference_contexts": [
+        "16 weeks of fully paid parental leave"
+      ],
+      "expected_sources": [
+        "company-handbook.md"
+      ],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q005",
+      "category": "single_hop",
+      "principal": "employee",
+      "question": "What is the annual learning budget per employee?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "Each employee has a $1,500 annual learning budget for courses, books and conferences.",
+      "reference_contexts": [
+        "$1,500 annual learning budget"
+      ],
+      "expected_sources": [
+        "company-handbook.md"
+      ],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q006",
+      "category": "single_hop",
+      "principal": "engineer",
+      "question": "What does a pull request need before it can be merged?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "Every PR needs one approval and a green CI run before merge.",
+      "reference_contexts": [
+        "Every PR requires one approval and a green CI run before"
+      ],
+      "expected_sources": [
+        "onboarding-guide.pdf"
+      ],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q007",
+      "category": "single_hop",
+      "principal": "engineer",
+      "question": "When do new engineers join the on-call rotation?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "Engineers join the on-call rotation after their first month. Shifts run one week and are compensated.",
+      "reference_contexts": [
+        "Engineers join the on-call rotation after their first month"
+      ],
+      "expected_sources": [
+        "onboarding-guide.pdf"
+      ],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q008",
+      "category": "single_hop",
+      "principal": "finance_analyst",
+      "question": "How do we recognize revenue from an annual plan?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "The full annual invoice is booked to account 2400 Deferred Revenue on the invoice date and released to account 4000 Subscription Revenue in 12 equal monthly amounts.",
+      "reference_contexts": [
+        "released to account 4000 Subscription Revenue in 12 equal monthly amounts"
+      ],
+      "expected_sources": [
+        "finance-expense-and-revenue-policy.md"
+      ],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q009",
+      "category": "single_hop",
+      "principal": "finance_analyst",
+      "question": "By which business day are the books closed each month?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "The books close on business day 6 (BD6) of the following month, with sign-off by the Controller and VP Finance.",
+      "reference_contexts": [
+        "The books close on business day 6 (BD6) of the following month."
+      ],
+      "expected_sources": [
+        "finance-expense-and-revenue-policy.md"
+      ],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q010",
+      "category": "single_hop",
+      "principal": "hr_manager",
+      "question": "What is the salary band for level L4?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "L4 ranges from $125,000 to $165,000 with a midpoint of $145,000 (annual base salary, Zone A).",
+      "reference_contexts": [
+        "| L4 | $125,000 | $145,000 | $165,000 |"
+      ],
+      "expected_sources": [
+        "hr-compensation-and-leave.md"
+      ],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q011",
+      "category": "single_hop",
+      "principal": "hr_manager",
+      "question": "When do promotions take effect?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "Promotions happen twice a year, effective April 1 and October 1.",
+      "reference_contexts": [
+        "effective April 1 and October 1"
+      ],
+      "expected_sources": [
+        "hr-compensation-and-leave.md"
+      ],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q012",
+      "category": "single_hop",
+      "principal": "engineer",
+      "question": "How often should status updates be posted during a SEV1 incident?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "During a SEV1 incident, status updates are posted every 30 minutes.",
+      "reference_contexts": [
+        "SEV1 status updates every 30 minutes."
+      ],
+      "expected_sources": [
+        "security-incident-runbook.md"
+      ],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q013",
+      "category": "single_hop",
+      "principal": "sales_rep",
+      "question": "How much does the guided onboarding package cost?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "The guided onboarding package is $1,500 one-time and is available on Pro and Enterprise.",
+      "reference_contexts": [
+        "| Guided onboarding package | $1,500 one-time | Pro and Enterprise |"
+      ],
+      "expected_sources": [
+        "sales-playbook.md"
+      ],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q014",
+      "category": "single_hop",
+      "principal": "employee",
+      "question": "How long are application and access logs retained?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "Application and access logs are kept for 90 days and then expire automatically in the log platform.",
+      "reference_contexts": [
+        "Application and access logs",
+        "Automatic expiry in the log platform"
+      ],
+      "expected_sources": [
+        "data-retention-policy.docx"
+      ],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q015",
+      "category": "single_hop",
+      "principal": "sales_rep",
+      "question": "How long can an Enterprise pilot run during the technical evaluation stage?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "The pilot in stage 2 (technical evaluation) can run for up to 30 days, with agreed success criteria.",
+      "reference_contexts": [
+        "Pilot of up to 30 days completed with agreed success criteria"
+      ],
+      "expected_sources": [
+        "sales-playbook.md"
+      ],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q016",
+      "category": "multi_hop",
+      "principal": "employee",
+      "question": "How quickly must I report a lost laptop, and how are retired laptops wiped?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "A lost device must be reported to the security team within one hour of discovery (handbook). Retired laptops and drives are wiped following NIST SP 800-88 before reuse or recycling (data retention policy).",
+      "reference_contexts": [
+        "must be reported to the security team within one hour of discovery",
+        "following NIST SP 800-88 before reuse or recycling"
+      ],
+      "expected_sources": [
+        "company-handbook.md",
+        "data-retention-policy.docx"
+      ],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q017",
+      "category": "multi_hop",
+      "principal": "engineer",
+      "question": "As the primary on-call, how long do I have to acknowledge a page, and what happens if I miss it?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "A page must be acknowledged within 15 minutes. If the primary does not acknowledge within 15 minutes, the page escalates to the secondary, and after 30 minutes to the engineering manager on duty.",
+      "reference_contexts": [
+        "acknowledge a page within 15 minutes",
+        "If the primary does not acknowledge within 15 minutes, the page escalates to the secondary."
+      ],
+      "expected_sources": [
+        "onboarding-guide.pdf",
+        "security-incident-runbook.md"
+      ],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q018",
+      "category": "multi_hop",
+      "principal": "finance_analyst",
+      "question": "A customer on an annual plan cancels 10 days after purchase. What refund do they get and how does Finance record it?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "Annual plans cancelled within the first 14 days get a full refund. Finance posts the refund to account 4900 Refunds and Credits and reverses the unreleased Deferred Revenue balance for that order.",
+      "reference_contexts": [
+        "For annual plans cancelled within the first 14 days",
+        "4900 Refunds and Credits"
+      ],
+      "expected_sources": [
+        "company-handbook.md",
+        "finance-expense-and-revenue-policy.md"
+      ],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q019",
+      "category": "multi_hop",
+      "principal": "sales_rep",
+      "question": "What payment methods can an annual Enterprise customer use, and who must approve a 25% discount on that deal?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "Annual Enterprise customers can pay by major credit card or bank transfer (ACH and SEPA), and invoicing is available. A 25% discount falls in the 21% to 30% band and needs VP Finance approval.",
+      "reference_contexts": [
+        "All major credit cards and, on annual Enterprise plans, bank transfer (ACH and",
+        "| 21% to 30% | VP Finance |"
+      ],
+      "expected_sources": [
+        "product-faq.txt",
+        "sales-playbook.md"
+      ],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q020",
+      "category": "multi_hop",
+      "principal": "hr_manager",
+      "question": "What is the maximum base salary for L6, and how long are employee records kept after someone leaves?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "The L6 band maximum is $255,000 (Zone A). Employee records are kept for 7 years after employment ends.",
+      "reference_contexts": [
+        "| L6 | $190,000 | $222,500 | $255,000 |",
+        "7 years after employment ends"
+      ],
+      "expected_sources": [
+        "hr-compensation-and-leave.md",
+        "data-retention-policy.docx"
+      ],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q021",
+      "category": "multi_hop",
+      "principal": "employee",
+      "question": "Where is customer data stored, and how long are backups of it kept?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "Customer data is stored in SOC 2 Type II certified data centers, in the US or EU region chosen at project creation. Backups are kept for 35 days on a rolling basis and stay in the same region.",
+      "reference_contexts": [
+        "Data is stored in SOC 2 Type II certified data centers.",
+        "35 days, rolling"
+      ],
+      "expected_sources": [
+        "product-faq.txt",
+        "data-retention-policy.docx"
+      ],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q022",
+      "category": "multi_hop",
+      "principal": "engineer",
+      "question": "How are production deploys promoted, and what is the preferred fix if a deploy causes an incident?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "Production deploys are promoted manually after a smoke test passes. If a deploy causes an incident, a rollback is preferred over a forward-fix under pressure.",
+      "reference_contexts": [
+        "manually after a smoke test passes",
+        "Rollbacks are preferred over a forward-fix under"
+      ],
+      "expected_sources": [
+        "onboarding-guide.pdf",
+        "security-incident-runbook.md"
+      ],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q023",
+      "category": "multi_hop",
+      "principal": "finance_analyst",
+      "question": "Above what amount do expenses need a receipt, and who approves a $6,000 expense?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "Receipts are required for any expense over $25. A $6,000 expense falls in the $2,501 to $10,000 band and needs department head approval.",
+      "reference_contexts": [
+        "Receipts are required for any expense over $25.",
+        "| $2,501 to $10,000 | Department head |"
+      ],
+      "expected_sources": [
+        "company-handbook.md",
+        "finance-expense-and-revenue-policy.md"
+      ],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q024",
+      "category": "lexical",
+      "principal": "public_visitor",
+      "question": "Is data at rest encrypted with AES-256?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "Yes. Data is encrypted at rest with AES-256 and in transit with TLS 1.2+. Customer-managed keys are available on Enterprise.",
+      "reference_contexts": [
+        "at rest (AES-256)"
+      ],
+      "expected_sources": [
+        "product-faq.txt"
+      ],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q025",
+      "category": "lexical",
+      "principal": "public_visitor",
+      "question": "Can I pay by SEPA?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "SEPA bank transfer (and ACH) is available on annual Enterprise plans. Other plans pay by major credit card.",
+      "reference_contexts": [
+        "SEPA). Invoicing is available for Enterprise customers."
+      ],
+      "expected_sources": [
+        "product-faq.txt"
+      ],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q026",
+      "category": "lexical",
+      "principal": "public_visitor",
+      "question": "What should my client do when the API returns HTTP 429?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "HTTP 429 means the rate limit was exceeded. Back off and retry with exponential delay.",
+      "reference_contexts": [
+        "429; back off and retry with exponential delay."
+      ],
+      "expected_sources": [
+        "product-faq.txt"
+      ],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q027",
+      "category": "lexical",
+      "principal": "engineer",
+      "question": "What does make bootstrap do?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "It installs the toolchain on day 1 of onboarding.",
+      "reference_contexts": [
+        "Install the toolchain with make bootstrap"
+      ],
+      "expected_sources": [
+        "onboarding-guide.pdf"
+      ],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q028",
+      "category": "lexical",
+      "principal": "engineer",
+      "question": "What counts as a SEV1?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "SEV1 is critical: a confirmed breach of customer data, production down for all customers, or production credentials exposed publicly. Pages are acknowledged within 15 minutes, 24/7, with updates every 30 minutes.",
+      "reference_contexts": [
+        "Critical: confirmed breach of customer data"
+      ],
+      "expected_sources": [
+        "security-incident-runbook.md"
+      ],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q029",
+      "category": "lexical",
+      "principal": "employee",
+      "question": "Which policy mentions NIST SP 800-88 and what is it used for?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "The data retention policy: retired laptops and storage media are sanitized following NIST SP 800-88, with a certificate of destruction.",
+      "reference_contexts": [
+        "Media sanitization following NIST SP 800-88, with a certificate of destruction"
+      ],
+      "expected_sources": [
+        "data-retention-policy.docx"
+      ],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q030",
+      "category": "unanswerable",
+      "principal": "employee",
+      "question": "Who is the CEO of Acme?",
+      "history": [],
+      "expect": "refuse",
+      "reference_answer": "Should say the documents do not contain this information and must not invent an answer. No CEO name is given.",
+      "reference_contexts": [],
+      "expected_sources": [],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q031",
+      "category": "unanswerable",
+      "principal": "employee",
+      "question": "What percentage does Acme match on 401(k) contributions?",
+      "history": [],
+      "expect": "refuse",
+      "reference_answer": "Should say the documents do not contain this information and must not invent an answer. Retirement plans are not covered.",
+      "reference_contexts": [],
+      "expected_sources": [],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q032",
+      "category": "unanswerable",
+      "principal": "public_visitor",
+      "question": "Does Acme Cloud offer a GraphQL API?",
+      "history": [],
+      "expect": "refuse",
+      "reference_answer": "Should say the documents do not contain this information and must not invent an answer. The FAQ mentions an API and webhooks but not GraphQL.",
+      "reference_contexts": [],
+      "expected_sources": [],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q033",
+      "category": "unanswerable",
+      "principal": "employee",
+      "question": "What is the street address of Acme headquarters?",
+      "history": [],
+      "expect": "refuse",
+      "reference_answer": "Should say the documents do not contain this information and must not invent an answer. Acme is described as remote-first; no address is given.",
+      "reference_contexts": [],
+      "expected_sources": [],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q034",
+      "category": "unanswerable",
+      "principal": "public_visitor",
+      "question": "What is the maximum file upload size in Acme Cloud?",
+      "history": [],
+      "expect": "refuse",
+      "reference_answer": "Should say the documents do not contain this information and must not invent an answer. Only storage quotas per plan are documented.",
+      "reference_contexts": [],
+      "expected_sources": [],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q035",
+      "category": "unanswerable",
+      "principal": "employee",
+      "question": "When is the next company offsite?",
+      "history": [],
+      "expect": "refuse",
+      "reference_answer": "Should say the documents do not contain this information and must not invent an answer. Offsite travel rules exist, but no dates.",
+      "reference_contexts": [],
+      "expected_sources": [],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q036",
+      "category": "unanswerable",
+      "principal": "sales_rep",
+      "question": "What commission rate do Account Executives earn?",
+      "history": [],
+      "expect": "refuse",
+      "reference_answer": "Should say the documents do not contain this information and must not invent an answer. Commission rates are not documented in any document the sales rep can read.",
+      "reference_contexts": [],
+      "expected_sources": [],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q037",
+      "category": "rbac_restricted",
+      "principal": "employee",
+      "question": "What are the salary bands for each level?",
+      "history": [],
+      "expect": "refuse",
+      "reference_answer": "Should refuse or say no accessible document covers this. Salary bands are in an HR restricted document the employee cannot read; no figures may be revealed.",
+      "reference_contexts": [],
+      "expected_sources": [],
+      "forbidden_sources": [
+        "hr-compensation-and-leave.md"
+      ],
+      "sql_check": null
+    },
+    {
+      "id": "q038",
+      "category": "rbac_restricted",
+      "principal": "sales_rep",
+      "question": "What is the target bonus for an L3 employee?",
+      "history": [],
+      "expect": "refuse",
+      "reference_answer": "Should refuse. Bonus targets are in an HR restricted document; the 8% figure must not appear.",
+      "reference_contexts": [],
+      "expected_sources": [],
+      "forbidden_sources": [
+        "hr-compensation-and-leave.md"
+      ],
+      "sql_check": null
+    },
+    {
+      "id": "q039",
+      "category": "rbac_restricted",
+      "principal": "finance_analyst",
+      "question": "What is the maximum base salary for an L6 Director?",
+      "history": [],
+      "expect": "refuse",
+      "reference_answer": "Should refuse. Confidential finance clearance does not grant access to the HR restricted document; no salary figures may be revealed.",
+      "reference_contexts": [],
+      "expected_sources": [],
+      "forbidden_sources": [
+        "hr-compensation-and-leave.md"
+      ],
+      "sql_check": null
+    },
+    {
+      "id": "q040",
+      "category": "rbac_restricted",
+      "principal": "engineer",
+      "question": "Who must approve a 25% discount on an Enterprise deal?",
+      "history": [],
+      "expect": "refuse",
+      "reference_answer": "Should refuse. The discount approval matrix is in finance and sales documents the engineer cannot read; VP Finance must not be named as the approver.",
+      "reference_contexts": [],
+      "expected_sources": [],
+      "forbidden_sources": [
+        "finance-expense-and-revenue-policy.md",
+        "sales-playbook.md"
+      ],
+      "sql_check": null
+    },
+    {
+      "id": "q041",
+      "category": "rbac_restricted",
+      "principal": "employee",
+      "question": "On which business day is the month-end close signed off?",
+      "history": [],
+      "expect": "refuse",
+      "reference_answer": "Should refuse. The close calendar is in a confidential finance document the employee cannot read.",
+      "reference_contexts": [],
+      "expected_sources": [],
+      "forbidden_sources": [
+        "finance-expense-and-revenue-policy.md"
+      ],
+      "sql_check": null
+    },
+    {
+      "id": "q042",
+      "category": "rbac_restricted",
+      "principal": "public_visitor",
+      "question": "What are the severity levels in the security incident runbook?",
+      "history": [],
+      "expect": "refuse",
+      "reference_answer": "Should refuse. The runbook is internal to engineering; SEV levels and response times must not be revealed to a public visitor.",
+      "reference_contexts": [],
+      "expected_sources": [],
+      "forbidden_sources": [
+        "security-incident-runbook.md",
+        "onboarding-guide.pdf",
+        "company-handbook.md"
+      ],
+      "sql_check": null
+    },
+    {
+      "id": "q043",
+      "category": "rbac_restricted",
+      "principal": "hr_manager",
+      "question": "What are the stages of an Enterprise deal in the sales pipeline?",
+      "history": [],
+      "expect": "refuse",
+      "reference_answer": "Should refuse. The sales playbook belongs to the sales department; restricted HR clearance does not include other departments.",
+      "reference_contexts": [],
+      "expected_sources": [],
+      "forbidden_sources": [
+        "sales-playbook.md"
+      ],
+      "sql_check": null
+    },
+    {
+      "id": "q044",
+      "category": "sql",
+      "principal": "finance_analyst",
+      "question": "How many orders were refunded in 2026?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "55 orders were refunded in 2026. Answered from the sales database only.",
+      "reference_contexts": [],
+      "expected_sources": [],
+      "forbidden_sources": [],
+      "sql_check": {
+        "query": "SELECT count(*) FROM sales.orders WHERE status = 'refunded' AND order_date >= '2026-01-01' AND order_date < '2027-01-01'",
+        "value": 55
+      }
+    },
+    {
+      "id": "q045",
+      "category": "sql",
+      "principal": "finance_analyst",
+      "question": "Which EU customer has generated the most revenue from paid orders?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "Vantage Media B.V. is the top EU customer by paid order revenue ($3,371,820.00). Answered from the sales database only.",
+      "reference_contexts": [],
+      "expected_sources": [],
+      "forbidden_sources": [],
+      "sql_check": {
+        "query": "SELECT c.name FROM sales.orders o JOIN sales.customers c ON c.id = o.customer_id WHERE c.region = 'EU' AND o.status = 'paid' GROUP BY c.id, c.name ORDER BY sum(o.total) DESC LIMIT 1",
+        "value": "Vantage Media B.V."
+      }
+    },
+    {
+      "id": "q046",
+      "category": "sql",
+      "principal": "sales_rep",
+      "question": "How many seats do our Enterprise customers have in total?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "Enterprise customers have 8,055 seats in total. Answered from the sales database only.",
+      "reference_contexts": [],
+      "expected_sources": [],
+      "forbidden_sources": [],
+      "sql_check": {
+        "query": "SELECT sum(seats) FROM sales.customers WHERE plan = 'Enterprise'",
+        "value": 8055
+      }
+    },
+    {
+      "id": "q047",
+      "category": "sql",
+      "principal": "finance_analyst",
+      "question": "What was the total revenue from paid orders in Q3 2026?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "Paid orders in Q3 2026 (July to September) totalled $10,902,850.10. Answered from the sales database only.",
+      "reference_contexts": [],
+      "expected_sources": [],
+      "forbidden_sources": [],
+      "sql_check": {
+        "query": "SELECT sum(total) FROM sales.orders WHERE status = 'paid' AND order_date >= '2026-07-01' AND order_date < '2026-10-01'",
+        "value": 10902850.1
+      }
+    },
+    {
+      "id": "q048",
+      "category": "sql",
+      "principal": "sales_rep",
+      "question": "How many customers do we have in France?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "There are 11 customers in France. Answered from the sales database only.",
+      "reference_contexts": [],
+      "expected_sources": [],
+      "forbidden_sources": [],
+      "sql_check": {
+        "query": "SELECT count(*) FROM sales.customers WHERE country = 'France'",
+        "value": 11
+      }
+    },
+    {
+      "id": "q049",
+      "category": "sql",
+      "principal": "sales_rep",
+      "question": "Which add-on appears on the most paid orders?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "Extra storage (100 GB block) appears on the most paid orders (395). Answered from the sales database only.",
+      "reference_contexts": [],
+      "expected_sources": [],
+      "forbidden_sources": [],
+      "sql_check": {
+        "query": "SELECT p.name FROM sales.order_items oi JOIN sales.products p ON p.id = oi.product_id JOIN sales.orders o ON o.id = oi.order_id WHERE p.category = 'add-on' AND o.status = 'paid' GROUP BY p.name ORDER BY count(DISTINCT o.id) DESC LIMIT 1",
+        "value": "Extra storage (100 GB block)"
+      }
+    },
+    {
+      "id": "q050",
+      "category": "sql",
+      "principal": "finance_analyst",
+      "question": "How many orders were cancelled in 2025?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "18 orders were cancelled in 2025. Answered from the sales database only.",
+      "reference_contexts": [],
+      "expected_sources": [],
+      "forbidden_sources": [],
+      "sql_check": {
+        "query": "SELECT count(*) FROM sales.orders WHERE status = 'cancelled' AND order_date >= '2025-01-01' AND order_date < '2026-01-01'",
+        "value": 18
+      }
+    },
+    {
+      "id": "q051",
+      "category": "hybrid",
+      "principal": "finance_analyst",
+      "question": "How many refunded orders did we have in Q1 2026, and what is the refund window for customers?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "There were 7 refunded orders in Q1 2026. Customers may request a full refund within 30 days of purchase; after that, refunds are store credit only.",
+      "reference_contexts": [
+        "Customers may request a full refund within 30 days of purchase"
+      ],
+      "expected_sources": [
+        "company-handbook.md"
+      ],
+      "forbidden_sources": [],
+      "sql_check": {
+        "query": "SELECT count(*) FROM sales.orders WHERE status = 'refunded' AND order_date >= '2026-01-01' AND order_date < '2026-04-01'",
+        "value": 7
+      }
+    },
+    {
+      "id": "q052",
+      "category": "hybrid",
+      "principal": "sales_rep",
+      "question": "How many of our customers are in the EU region, and can a project's region be changed later?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "64 customers are in the EU region. The region is chosen at project creation and cannot be changed after creation.",
+      "reference_contexts": [
+        "The region cannot be changed after creation."
+      ],
+      "expected_sources": [
+        "product-faq.txt"
+      ],
+      "forbidden_sources": [],
+      "sql_check": {
+        "query": "SELECT count(*) FROM sales.customers WHERE region = 'EU'",
+        "value": 64
+      }
+    },
+    {
+      "id": "q053",
+      "category": "hybrid",
+      "principal": "sales_rep",
+      "question": "How many paid annual-billing orders did we take in 2026, and how much does annual billing save the customer?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "There were 266 paid annual-billing orders in 2026. Annual billing saves two months compared to monthly.",
+      "reference_contexts": [
+        "Annual billing saves two months compared to monthly."
+      ],
+      "expected_sources": [
+        "product-faq.txt"
+      ],
+      "forbidden_sources": [],
+      "sql_check": {
+        "query": "SELECT count(*) FROM sales.orders WHERE billing = 'annual' AND status = 'paid' AND order_date >= '2026-01-01' AND order_date < '2027-01-01'",
+        "value": 266
+      }
+    },
+    {
+      "id": "q054",
+      "category": "hybrid",
+      "principal": "sales_rep",
+      "question": "What is the lowest monthly Enterprise seat price we have charged, and who had to approve that discount?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "The lowest monthly Enterprise seat price charged is $63.20, which is 20% off the $79 list reference. Discounts of 11% to 20% are approved by the Head of Sales.",
+      "reference_contexts": [
+        "list reference $79 per user per month",
+        "| 11% to 20% | Head of Sales |"
+      ],
+      "expected_sources": [
+        "sales-playbook.md"
+      ],
+      "forbidden_sources": [],
+      "sql_check": {
+        "query": "SELECT min(oi.unit_price) FROM sales.order_items oi JOIN sales.products p ON p.id = oi.product_id JOIN sales.orders o ON o.id = oi.order_id WHERE p.sku = 'PLAN-ENTERPRISE' AND o.billing = 'monthly'",
+        "value": 63.2
+      }
+    },
+    {
+      "id": "q055",
+      "category": "hybrid",
+      "principal": "sales_rep",
+      "question": "How many Enterprise customers do we have, and what support do they get?",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "There are 25 Enterprise customers. Enterprise customers get a dedicated support engineer and a private Slack channel, and critical production issues get a first response within one hour, 24/7.",
+      "reference_contexts": [
+        "Customers on the Enterprise plan have access to a dedicated support engineer and"
+      ],
+      "expected_sources": [
+        "company-handbook.md"
+      ],
+      "forbidden_sources": [],
+      "sql_check": {
+        "query": "SELECT count(*) FROM sales.customers WHERE plan = 'Enterprise'",
+        "value": 25
+      }
+    },
+    {
+      "id": "q056",
+      "category": "arabic",
+      "principal": "employee",
+      "question": "ما هي ساعات العمل الأساسية في الشركة؟",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "ساعات التعاون الأساسية من الساعة 10:00 صباحاً حتى الساعة 15:00 بالتوقيت المحلي لكل موظف.",
+      "reference_contexts": [
+        "من الساعة 10:00 صباحاً حتى الساعة 15:00 بالتوقيت المحلي"
+      ],
+      "expected_sources": [
+        "سياسة-العمل-عن-بعد.md"
+      ],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q057",
+      "category": "arabic",
+      "principal": "employee",
+      "question": "متى يجب إبلاغ إدارة شؤون الموظفين عند الانتقال للعيش في بلد آخر؟",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "يجب إبلاغ إدارة شؤون الموظفين مسبقاً إذا كانت مدة الانتقال إلى بلد آخر تزيد على 30 يوماً، لأن ذلك قد يؤثر في الوضع الضريبي والامتثال.",
+      "reference_contexts": [
+        "لمدة تزيد على 30 يوماً أن يُبلغ إدارة شؤون الموظفين مسبقاً"
+      ],
+      "expected_sources": [
+        "سياسة-العمل-عن-بعد.md"
+      ],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q058",
+      "category": "arabic",
+      "principal": "public_visitor",
+      "question": "كم يبلغ سعر خطة Pro؟",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "سعر خطة Pro هو 29 دولاراً لكل مستخدم شهرياً.",
+      "reference_contexts": [
+        "Pro is $29 per user per month"
+      ],
+      "expected_sources": [
+        "product-faq.txt"
+      ],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q059",
+      "category": "arabic",
+      "principal": "employee",
+      "question": "كم يوماً من الإجازة المدفوعة يحصل عليها الموظف بدوام كامل في السنة؟",
+      "history": [],
+      "expect": "answer",
+      "reference_answer": "يحصل الموظف بدوام كامل على 20 يوماً من الإجازة المدفوعة سنوياً، إضافة إلى 10 أيام عطل رسمية للشركة.",
+      "reference_contexts": [
+        "Full-time employees accrue 20 days of paid vacation per year"
+      ],
+      "expected_sources": [
+        "company-handbook.md"
+      ],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q060",
+      "category": "follow_up",
+      "principal": "public_visitor",
+      "question": "What is its API rate limit?",
+      "history": [
+        {
+          "role": "user",
+          "content": "What does the Pro plan include?"
+        },
+        {
+          "role": "assistant",
+          "content": "Pro is $29 per user per month and adds unlimited projects, 100 GB of storage, priority email support and the full API."
+        }
+      ],
+      "expect": "answer",
+      "reference_answer": "The Pro plan allows 600 API requests per minute.",
+      "reference_contexts": [
+        "Pro allows 600 per minute."
+      ],
+      "expected_sources": [
+        "product-faq.txt"
+      ],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q061",
+      "category": "follow_up",
+      "principal": "employee",
+      "question": "How many of them can I carry over to next year?",
+      "history": [
+        {
+          "role": "user",
+          "content": "How many vacation days do I get?"
+        },
+        {
+          "role": "assistant",
+          "content": "Full-time employees accrue 20 days of paid vacation per year, plus 10 company holidays."
+        }
+      ],
+      "expect": "answer",
+      "reference_answer": "Unused PTO days roll over up to a maximum of 30 days.",
+      "reference_contexts": [
+        "unused days roll over up to a maximum"
+      ],
+      "expected_sources": [
+        "company-handbook.md"
+      ],
+      "forbidden_sources": [],
+      "sql_check": null
+    },
+    {
+      "id": "q062",
+      "category": "follow_up",
+      "principal": "engineer",
+      "question": "Who do we have to notify for it, and by when?",
+      "history": [
+        {
+          "role": "user",
+          "content": "What is a SEV2 incident?"
+        },
+        {
+          "role": "assistant",
+          "content": "A SEV2 is a major incident: suspected unauthorized access, or a core feature down for many customers or for one Enterprise customer. Pages are acknowledged within 15 minutes, 24/7."
+        }
+      ],
+      "expect": "answer",
+      "reference_answer": "For a SEV2, the Head of Security must be notified within 60 minutes of declaring the incident.",
+      "reference_contexts": [
+        "For SEV2, notify the Head of Security within 60 minutes."
+      ],
+      "expected_sources": [
+        "security-incident-runbook.md"
+      ],
+      "forbidden_sources": [],
+      "sql_check": null
+    }
+  ]
+}
