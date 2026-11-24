@@ -24,6 +24,7 @@ class Citation(TypedDict):
     source: str
     page: int | None
     section: str
+    parent_id: str | None  # lets feedback on an answer be traced back to the passages it used
 
 
 class AgentState(TypedDict, total=False):

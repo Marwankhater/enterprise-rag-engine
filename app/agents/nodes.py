@@ -307,10 +307,19 @@ class AgentNodes:
                 block = contexts[i]
                 page = next((h.page for h in block.hits if h.page is not None), block.page_start)
                 used.append(
-                    Citation(label=label, title=block.title, source=block.source, page=page, section=block.heading_path)
+                    Citation(
+                        label=label,
+                        title=block.title,
+                        source=block.source,
+                        page=page,
+                        section=block.heading_path,
+                        parent_id=block.parent_id,
+                    )
                 )
             else:
-                used.append(Citation(label=label, title="Sales database", source="sales", page=None, section=""))
+                used.append(
+                    Citation(label=label, title="Sales database", source="sales", page=None, section="", parent_id=None)
+                )
         return used
 
     # 6. verify_hallucination ------------------------------------------------------------------
