@@ -1,0 +1,11 @@
+.git
+.venv
+**/__pycache__
+.pytest_cache
+.ruff_cache
+.pytest-uploads
+.env
+models
+ml_pipeline/output
+reports/raw
+tests
