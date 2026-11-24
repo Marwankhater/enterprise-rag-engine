@@ -1,0 +1,68 @@
+name: train-reranker
+
+# Fine-tunes the reranker on CPU (about 20 minutes for the sample corpus), compares it with the
+# base model on held-out documents, then runs the retrieval evaluation with both. The model is
+# uploaded as an artifact; set RERANKER_MODEL to its unpacked directory to serve it.
+
+on:
+  workflow_dispatch:
+    inputs:
+      questions_per_chunk:
+        description: "Synthetic questions per chunk"
+        default: "3"
+      epochs:
+        description: "Training epochs"
+        default: "2"
+
+env:
+  DATABASE_URL: postgresql://rag:rag@localhost:5432/rag
+  REDIS_URL: redis://localhost:6379/0
+  SQL_READER_PASSWORD: rag_reader
+  LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+  LLM_BASE_URL: ${{ vars.LLM_BASE_URL || 'https://api.groq.com/openai/v1' }}
+  LLM_MODEL: ${{ vars.LLM_MODEL || 'llama-3.3-70b-versatile' }}
+  LLM_GRADER_MODEL: ${{ vars.LLM_GRADER_MODEL || 'llama-3.1-8b-instant' }}
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env: { POSTGRES_USER: rag, POSTGRES_PASSWORD: rag, POSTGRES_DB: rag }
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U rag" --health-interval 5s --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12", cache: pip }
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: hf-${{ hashFiles('.env.example') }}
+      - run: |
+          pip install --index-url https://download.pytorch.org/whl/cpu torch
+          pip install -e ".[ml]"
+      - run: |
+          alembic upgrade head
+          python -m scripts.ingest_examples
+      - name: Build training data
+        run: python -m ml_pipeline.train_reranker build-data --questions-per-chunk ${{ github.event.inputs.questions_per_chunk }}
+      - name: Fine-tune
+        run: python -m ml_pipeline.train_reranker train --epochs ${{ github.event.inputs.epochs }}
+      - name: Retrieval evaluation, base and fine-tuned
+        run: |
+          {
+            echo "## Training"; echo '```json'; cat ml_pipeline/output/reranker-ft/training_metrics.json; echo '```'
+            python -m ml_pipeline.evaluate_rag retrieval
+            python -m ml_pipeline.evaluate_rag retrieval --reranker ml_pipeline/output/reranker-ft
+          } | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: reranker-ft
+          path: |
+            ml_pipeline/output/reranker-ft
+            reports/
+          retention-days: 30
