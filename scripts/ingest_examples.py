@@ -1,7 +1,7 @@
 """Ingest every document in examples/ with the access rules from examples/manifest.json.
 
-    python -m scripts.ingest_examples            # skips files that are already ingested
-    python -m scripts.ingest_examples --reset    # deletes all documents first
+python -m scripts.ingest_examples            # skips files that are already ingested
+python -m scripts.ingest_examples --reset    # deletes all documents first
 """
 
 from __future__ import annotations
