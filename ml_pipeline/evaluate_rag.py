@@ -234,7 +234,6 @@ async def run_agent_cases(
                 "latency_s": round(time.perf_counter() - started, 2),
                 "tokens": sum(u["input_tokens"] + u["output_tokens"] for u in state.get("usage", [])),
                 "unsupported": state.get("unsupported_claims") or [],
-                "intent": state.get("intent"),
             }
         )
         row = rows[-1]
