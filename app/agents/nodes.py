@@ -42,7 +42,9 @@ Labels:
 - unstructured_rag: answered from documents (policies, how things work, rules, definitions).
 - structured_sql: answered by counting, summing or listing sales data.
 - hybrid_both: needs a figure from the sales data and a rule or fact from the documents.
-- out_of_scope: unrelated to the company (general knowledge, chit-chat, coding help, opinions).
+- out_of_scope: unrelated to the company (general knowledge, chit-chat, opinions, general coding help).
+Internal tools, commands, onboarding steps, runbooks and engineering practices are company topics,
+so a question like "what does make bootstrap do?" is unstructured_rag.
 Reply with JSON: {"intent": "<label>", "reason": "<few words>"}"""
 
 GRADE_PROMPT = """You check whether retrieved evidence can answer a question.
@@ -54,8 +56,8 @@ Reply with JSON: {"relevant": [<source numbers>], "sufficient": true|false,
 ANSWER_PROMPT = """You answer questions for employees using only the sources below.
 Rules:
 - Use only facts stated in the sources. Do not add outside knowledge or assumptions.
-- After each sentence that uses a source, cite it with the source's label exactly as written,
-  for example {example}.
+- After each sentence that uses a source, cite it with the source number in square brackets,
+  for example [1] or [1][2]. Use only the numbers listed below.
 - Copy numbers, amounts, dates and limits exactly as they appear in the sources.
 - If the sources answer only part of the question, answer that part and say plainly what is not
   covered.
@@ -118,12 +120,37 @@ def numbered_sources(contexts: list[ContextBlock], sql: SQLResult | None) -> tup
         label = block.citation
         labels.append(label)
         section = f" (section: {block.heading_path})" if block.heading_path else ""
-        parts.append(f"Source {i} {label}{section}\n{block.content}")
+        parts.append(f"[{i}] {label}{section}\n{block.content}")
     if sql is not None and sql.sql and not sql.error:
         label = "[Sales database | query]"
         labels.append(label)
-        parts.append(f"Source {len(labels)} {label}\n{sql.as_context()}")
+        parts.append(f"[{len(labels)}] {label}\n{sql.as_context()}")
     return "\n\n".join(parts), labels
+
+
+_MARKER = re.compile(r"\[(\d{1,2})\]")
+
+
+def resolve_markers(answer: str, labels: list[str]) -> tuple[str, list[int]]:
+    """Replace the model's [n] markers with the readable labels, and list which sources were cited.
+
+    Asking the model for numbers is more reliable than asking it to copy a long label exactly.
+    Markers pointing at a source that does not exist are dropped, so they cannot pass as citations.
+    """
+    used: list[int] = []
+
+    def swap(match: re.Match[str]) -> str:
+        index = int(match.group(1)) - 1
+        if 0 <= index < len(labels):
+            if index not in used:
+                used.append(index)
+            return labels[index]
+        return ""
+
+    text = _MARKER.sub(swap, answer)
+    for label in labels:  # collapse "[A][A]" left by "[1][1]"
+        text = text.replace(label + label, label)
+    return re.sub(r"[ \t]+([.,;:])", r"\1", text).strip(), sorted(used)
 
 
 def numbers_missing_from_sources(answer: str, sources: str) -> list[str]:
@@ -279,29 +306,27 @@ class AgentNodes:
                 "Remove them or correct them from the sources."
             )
         language = "Arabic" if state.get("language") == "ar" else "English"
-        prompt = ANSWER_PROMPT.format(
-            example=labels[0] if labels else "[Title | p. 1]", language=language, feedback=feedback, sources=sources
-        )
+        prompt = ANSWER_PROMPT.format(language=language, feedback=feedback, sources=sources)
         messages = [{"role": "system", "content": prompt}, {"role": "user", "content": state["standalone_question"]}]
         try:
             result = await self.llm.chat(messages, max_tokens=700, name="generate")
         except LLMError:
             log.exception("generation failed")
             return {"refusal": "error", "steps": ["generate_with_citations"]}
-        answer = result.text.strip()
+        answer, used = resolve_markers(result.text.strip(), labels)
         return {
             "answer": answer,
-            "citations": self._citations(answer, contexts, labels),
+            "citations": self._citations(used, contexts, labels),
             "regenerations": state.get("regenerations", -1) + 1,
             "steps": ["generate_with_citations"],
             "usage": _usage(result, "generate"),
         }
 
     @staticmethod
-    def _citations(answer: str, contexts: list[ContextBlock], labels: list[str]) -> list[Citation]:
+    def _citations(used_indexes: list[int], contexts: list[ContextBlock], labels: list[str]) -> list[Citation]:
         used: list[Citation] = []
         for i, label in enumerate(labels):
-            if label not in answer:
+            if i not in used_indexes:
                 continue
             if i < len(contexts):
                 block = contexts[i]

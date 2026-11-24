@@ -98,12 +98,12 @@ class ScriptedLLM:
                 return {"intent": "structured_sql", "reason": "counting"}
             return {"intent": "unstructured_rag", "reason": "policy"}
         if name == "grade_context":
-            count = len(re.findall(r"^Source \d+ ", user, flags=re.M))
+            count = len(re.findall(r"^\[\d+\] ", user, flags=re.M))
             question = user.split("\n", 1)[0].lower()
             words = [w for w in re.findall(r"[a-z0-9\-]{4,}", question) if w not in {"question", "what", "does"}]
             relevant = [
                 i
-                for i, block in enumerate(re.split(r"^Source \d+ ", user, flags=re.M)[1:], start=1)
+                for i, block in enumerate(re.split(r"^\[\d+\] ", user, flags=re.M)[1:], start=1)
                 if any(w in block.lower() for w in words)
             ]
             return {
@@ -126,12 +126,12 @@ class ScriptedLLM:
     def _answer(messages: list[dict[str, str]]) -> str:
         system = messages[0]["content"]
         sources = system.split("Sources:\n", 1)[-1]
-        first = re.search(r"^Source 1 (\[[^\]]+\])[^\n]*\n(.+?)(?:\n\nSource \d|\Z)", sources, flags=re.S | re.M)
+        first = re.search(r"^\[1\] (\[[^\]]+\])[^\n]*\n(.+?)(?:\n\n\[\d+\] |\Z)", sources, flags=re.S | re.M)
         if not first:
             return "No sources."
-        label, body = first.group(1), first.group(2)
+        body = first.group(2)
         sentence = re.split(r"(?<=[.!?])\s", body.replace("\n", " ").strip())[0]
-        return f"{sentence} {label}"
+        return f"{sentence} [1]"
 
     async def stream(self, messages, *, model=None, max_tokens=None):
         yield (await self.chat(messages, model=model, name="generate")).text

@@ -233,12 +233,18 @@ async def run_agent_cases(
                 "sql_check": case.get("sql_check"),
                 "latency_s": round(time.perf_counter() - started, 2),
                 "tokens": sum(u["input_tokens"] + u["output_tokens"] for u in state.get("usage", [])),
+                "unsupported": state.get("unsupported_claims") or [],
+                "intent": state.get("intent"),
             }
         )
+        row = rows[-1]
         print(
-            f"{case['id']:>5} {case['category']:<16} refusal={rows[-1]['refusal']!s:<12} {rows[-1]['latency_s']:>5}s",
+            f"{case['id']:>5} {case['category']:<16} intent={row['intent']!s:<17} refusal={row['refusal']!s:<12} "
+            f"{row['latency_s']:>5}s",
             flush=True,
         )
+        if row["unsupported"]:
+            print(f"        flagged: {'; '.join(map(str, row['unsupported']))[:300]}", flush=True)
     await services.sql_tool.engine.dispose()
     await redis.aclose()
     await dispose()

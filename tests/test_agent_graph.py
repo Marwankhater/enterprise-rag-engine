@@ -114,3 +114,12 @@ def test_number_check_flags_invented_figures() -> None:
     sources = "Refunds are processed within 5 to 7 business days. Pro is $29 per user per month."
     assert numbers_missing_from_sources("Pro costs $29 [FAQ | Plans].", sources) == []
     assert numbers_missing_from_sources("Pro costs $35 and refunds take 10 days.", sources) == ["35", "10"]
+
+
+def test_numbered_markers_become_labels() -> None:
+    from app.agents.nodes import resolve_markers
+
+    labels = ["[FAQ | p. 1]", "[Handbook | Refunds]"]
+    text, used = resolve_markers("Pro is $29 [1]. Refunds take 30 days [2][2]. Bogus [7].", labels)
+    assert text == "Pro is $29 [FAQ | p. 1]. Refunds take 30 days [Handbook | Refunds]. Bogus."
+    assert used == [0, 1]
