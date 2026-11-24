@@ -53,6 +53,7 @@ jobs:
       - name: Fine-tune
         run: python -m ml_pipeline.train_reranker train --epochs ${{ github.event.inputs.epochs }}
       - name: Retrieval evaluation, base and fine-tuned
+        shell: bash
         run: |
           {
             echo "## Training"; echo '```json'; cat ml_pipeline/output/reranker-ft/training_metrics.json; echo '```'
